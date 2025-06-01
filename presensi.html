@@ -27,7 +27,7 @@
         crossorigin="anonymous"></script>
     <nav class="navbar fixed-top navbar-light" style="background-color: #3dbaf9;">
         <div class="container-fluid">
-            <a class="navbar-brand" href="hal_utama.html">Toko Daging | Daftar Daging</a>
+            <a class="navbar-brand" href="hal_utama.html">Toko Daging | Presensi Admin</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
                 aria-controls="offcanvasNavbar">
                 <span class="navbar-toggler-icon"></span>
@@ -69,15 +69,11 @@
                 <form action="" method="post" enctype="multipart/form-data">
                     <table class="table table-secondary">
                         <tr>
-                            <td><label>Nama Produk</label></td>
-                            <td><input data-id type="text" id="produk" name="produk1" placeholder="Nama Produk"
+                            <td><label>Kehadiran</label></td>
+                            <td><input data-id type="text" id="kehadiran" name="produk1" placeholder="Keterangan Kehadiran"
                                     required></td>
                         </tr>
-                        <tr>
-                            <td><label>Harga</label></td>
-                            <td><input data-id class="form-control form-control-sm" type="number" id="harga" name="harga1"
-                                    placeholder="Harga" required></td>
-                        </tr>
+                        
                         
 
                     </table>
@@ -93,9 +89,9 @@
 
                 <table class="table table-secondary" id="table1">
                     <tr class="fw-bold">
-                        <td>Nama Produk</td>
-                        <td>Harga</td>
-                        
+                        <td>Nama Admin</td>
+                        <td>Kehadiran</td>
+                        <td>tanggal</td>
                         <td>Aksi</td>
                         <td></td>
                     </tr>
@@ -112,5 +108,5 @@
 
 
 </body>
-<script src="Item.js"></script>
+<script src="presensi.js"></script>
 </html>

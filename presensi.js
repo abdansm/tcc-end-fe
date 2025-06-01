@@ -1,6 +1,6 @@
 // Ngambil elemen form
 const formulir = document.querySelector("form");
-const url = "https://tcc-end-be-425714712446.us-central1.run.app/api/admin/item/";
+const url = "https://tcc-end-be-425714712446.us-central1.run.app/api/admin/presensi/";
 const token = sessionStorage.getItem('jwtToken');
 if(token == null){
     window.location.href = 'index.html';
@@ -11,11 +11,10 @@ if(token == null){
    window.location.href = 'index.html';
 }
 
-let d = new Date().toISOString();
+
 let b = new Date().toLocaleString("id-ID");
 
 // Display output
-console.log(d);
 console.log(b);
 
 
@@ -24,28 +23,28 @@ formulir.addEventListener("submit", (e) => {
   e.preventDefault();
 
   // Ngambil elemen input
-  const elemen_price = document.querySelector("#harga");
-  const elemen_item_name = document.querySelector("#produk");
+ 
+  const elemen_kehadiran = document.querySelector("#kehadiran");
 
   // Ngambil value (nim) dari elemen input
-  const price = elemen_price.value;
-  const item_name = elemen_item_name.value;
-
-  const id = elemen_price.dataset.id; // <- Khusus edit
+  
+  const kehadiran = elemen_kehadiran.value;
+  const tglskr = new Date().toISOString();
+  const id = elemen_kehadiran.dataset.id; // <- Khusus edit
  
   // Ngecek apakah harus POST atau PUT
   // Kalo id kosong, jadinya POST
   if (id == "") {
     // Tambah user
-    console.log(price);
-    console.log(item_name);
+    
+    console.log(kehadiran);
     fetch(url+"create/", {
       // Adding method type
       method: "POST",
       // Adding body or contents to send
       body: JSON.stringify({
-        price: parseInt(price),
-        item_name: item_name,
+        tgl: tglskr,
+        kehadiran: kehadiran,
       }),
       
       // Adding headers to the request
@@ -60,8 +59,7 @@ formulir.addEventListener("submit", (e) => {
       // Displaying results to console
       .then((json) => console.log(json))
       .then(() => {
-        elemen_price.value = "";
-        elemen_item_name.value = "";
+        elemen_kehadiran.value = "";
         getData();
       });
   } else {
@@ -71,8 +69,8 @@ formulir.addEventListener("submit", (e) => {
       method: "PUT",
       // Adding body or contents to send
       body: JSON.stringify({
-        price: parseInt(price),
-        item_name: item_name,
+       
+        kehadiran: kehadiran,
       }),
 
       // Adding headers to the request
@@ -87,8 +85,7 @@ formulir.addEventListener("submit", (e) => {
       // Displaying results to console
       .then((json) => console.log(json))
       .then(() => {
-        elemen_price.value = "";
-        elemen_item_name.value = "";
+        elemen_kehadiran.value = "";
         getData();
       });
   }
@@ -100,8 +97,9 @@ formulir.addEventListener("submit", (e) => {
 async function getData() {
   let tampilan = `<tr class="fw-bold">
                             <td>NO</td>
-                        <td>Nama Produk</td>
-                        <td>Harga</td>
+                        <td>Nama Admin</td>
+                        <td>Kehadiran</td>
+                        <td>Tanggal</td>
                         <td>Aksi</td>
                         <td></td>
                     </tr>`;
@@ -137,11 +135,14 @@ async function getData() {
 }
 
 function tampilkanUser(no, obj) {
+    let tanggal = new Date(obj.data[no - 1].tgl).toLocaleString();
+
   return `
     <tr>
       <td>${no}</td>
-      <td class="produk">${obj.data[no - 1].item_name}</td>
-      <td class="harga">${obj.data[no - 1].price}</td>
+    <td class="nama_admin">${obj.data[no - 1].Admin.name}</td>
+      <td class="kehadiran">${obj.data[no - 1].kehadiran}</td>
+      <td class="harga">${tanggal}</td>
       <td><button data-id=${
         obj.data[no - 1].id
       } class='btn-edit'>Edit</button></td>
@@ -187,24 +188,20 @@ function editUser() {
     tombol_edit.addEventListener("click", () => {
       // Ngambil value yg ada di form
       const id = tombol_edit.dataset.id;
-      const item_name =
+      const kehadiran =
         tombol_edit.parentElement.parentElement.querySelector(
-          ".produk"
+          ".kehadiran"
         ).innerText;
-      const price =
-        tombol_edit.parentElement.parentElement.querySelector(
-          ".harga"
-        ).innerText;
+      
       
 
       // Ngambil [elemen] input
-      const elemen_item_name = document.querySelector("#produk");
-      const elemen_price = document.querySelector("#harga");
+      const elemen_kehadiran = document.querySelector("#kehadiran");
 
       // Masukkin value yang ada di baris yang dipilih ke form
-      elemen_price.dataset.id = id;
-      elemen_item_name.value = item_name;
-      elemen_price.value = price;
+      elemen_kehadiran.dataset.id = id;
+      elemen_kehadiran.value = kehadiran;
+      
     });
   });
 }

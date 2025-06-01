@@ -44,7 +44,7 @@ formulir.addEventListener("submit", (e) => {
         elemen_email.value = "";
         elemen_password.value = "";
         //console.log(json.data.token);
-        localStorage.setItem('jwtToken', json.data.token);
+        sessionStorage.setItem('jwtToken', json.data.token);
         //let token = sessionStorage.getItem("token");
         //console.log(token);
         window.location.href = 'hal_utama.html';

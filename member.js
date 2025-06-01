@@ -1,6 +1,6 @@
 // Ngambil elemen form
 const formulir = document.querySelector("form");
-const url = "https://tcc-end-be-425714712446.us-central1.run.app/api/admin/item/";
+const url = "https://tcc-end-be-425714712446.us-central1.run.app/api/admin/member/";
 const token = sessionStorage.getItem('jwtToken');
 if(token == null){
     window.location.href = 'index.html';
@@ -11,41 +11,36 @@ if(token == null){
    window.location.href = 'index.html';
 }
 
-let d = new Date().toISOString();
-let b = new Date().toLocaleString("id-ID");
-
-// Display output
-console.log(d);
-console.log(b);
-
-
 // Bikin trigger event submit pada elemen form
 formulir.addEventListener("submit", (e) => {
   e.preventDefault();
 
   // Ngambil elemen input
-  const elemen_price = document.querySelector("#harga");
-  const elemen_item_name = document.querySelector("#produk");
+  const elemen_nik = document.querySelector("#nik");
+  const elemen_nama = document.querySelector("#nama");
+  const elemen_alamat = document.querySelector("#alamat");
 
   // Ngambil value (nim) dari elemen input
-  const price = elemen_price.value;
-  const item_name = elemen_item_name.value;
+  const nik = elemen_nik.value;
+  const nama = elemen_nama.value;
+  const alamat = elemen_alamat.value;
 
-  const id = elemen_price.dataset.id; // <- Khusus edit
+  const id = elemen_nik.dataset.id; // <- Khusus edit
  
   // Ngecek apakah harus POST atau PUT
   // Kalo id kosong, jadinya POST
   if (id == "") {
     // Tambah user
-    console.log(price);
-    console.log(item_name);
+    console.log(nik);
+    console.log(nama);
     fetch(url+"create/", {
       // Adding method type
       method: "POST",
       // Adding body or contents to send
       body: JSON.stringify({
-        price: parseInt(price),
-        item_name: item_name,
+        nama: nama,
+        nik: nik,
+        alamat: alamat
       }),
       
       // Adding headers to the request
@@ -60,8 +55,9 @@ formulir.addEventListener("submit", (e) => {
       // Displaying results to console
       .then((json) => console.log(json))
       .then(() => {
-        elemen_price.value = "";
-        elemen_item_name.value = "";
+        elemen_nik.value = "";
+        elemen_nama.value = "";
+        elemen_alamat.value = "";
         getData();
       });
   } else {
@@ -71,8 +67,9 @@ formulir.addEventListener("submit", (e) => {
       method: "PUT",
       // Adding body or contents to send
       body: JSON.stringify({
-        price: parseInt(price),
-        item_name: item_name,
+         nama: nama,
+        nik: nik,
+        alamat: alamat
       }),
 
       // Adding headers to the request
@@ -87,8 +84,9 @@ formulir.addEventListener("submit", (e) => {
       // Displaying results to console
       .then((json) => console.log(json))
       .then(() => {
-        elemen_price.value = "";
-        elemen_item_name.value = "";
+        elemen_nik.value = "";
+        elemen_nama.value = "";
+        elemen_alamat.value = "";
         getData();
       });
   }
@@ -100,8 +98,9 @@ formulir.addEventListener("submit", (e) => {
 async function getData() {
   let tampilan = `<tr class="fw-bold">
                             <td>NO</td>
-                        <td>Nama Produk</td>
-                        <td>Harga</td>
+                        <td>Nama</td>
+                        <td>NIK</td>
+                        <td>Alamat</td>
                         <td>Aksi</td>
                         <td></td>
                     </tr>`;
@@ -119,10 +118,10 @@ async function getData() {
     }
     const table = document.querySelector("#table1");
     const json = await response.json();
-    console.log(json);
     if (json.status == 403) {
       logout();
     }
+    console.log(json);
 
     for (let x in json.data) {
       tampilan += tampilkanUser(no, json);
@@ -140,8 +139,9 @@ function tampilkanUser(no, obj) {
   return `
     <tr>
       <td>${no}</td>
-      <td class="produk">${obj.data[no - 1].item_name}</td>
-      <td class="harga">${obj.data[no - 1].price}</td>
+      <td class="nama">${obj.data[no - 1].nama}</td>
+      <td class="nik">${obj.data[no - 1].nik}</td>
+      <td class="alamat">${obj.data[no - 1].alamat}</td>
       <td><button data-id=${
         obj.data[no - 1].id
       } class='btn-edit'>Edit</button></td>
@@ -187,24 +187,30 @@ function editUser() {
     tombol_edit.addEventListener("click", () => {
       // Ngambil value yg ada di form
       const id = tombol_edit.dataset.id;
-      const item_name =
+      const nama =
         tombol_edit.parentElement.parentElement.querySelector(
-          ".produk"
+          ".nama"
         ).innerText;
-      const price =
+      const nik =
         tombol_edit.parentElement.parentElement.querySelector(
-          ".harga"
+          ".nik"
+        ).innerText;
+        const alamat =
+        tombol_edit.parentElement.parentElement.querySelector(
+          ".alamat"
         ).innerText;
       
 
       // Ngambil [elemen] input
-      const elemen_item_name = document.querySelector("#produk");
-      const elemen_price = document.querySelector("#harga");
+      const elemen_nama = document.querySelector("#nama");
+      const elemen_nik = document.querySelector("#nik");
+      const elemen_alamat = document.querySelector("#alamat");
 
       // Masukkin value yang ada di baris yang dipilih ke form
-      elemen_price.dataset.id = id;
-      elemen_item_name.value = item_name;
-      elemen_price.value = price;
+      elemen_nik.dataset.id = id;
+      elemen_nama.value = nama;
+      elemen_nik.value = nik;
+      elemen_alamat.value = alamat;
     });
   });
 }

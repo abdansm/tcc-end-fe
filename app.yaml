@@ -1,0 +1,13 @@
+runtime: python39
+
+handlers:
+  - url: /
+    static_files: index.html
+    upload: index.html
+
+  - url: /(.*\.js)
+    mime_type: text/javascript
+    static_files: \1
+    upload: (.*\.js)
+
+service: abdansm-end-fe
