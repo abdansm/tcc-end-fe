@@ -135,7 +135,7 @@ async function getData() {
 }
 
 function tampilkanUser(no, obj) {
-    let tanggal = new Date(obj.data[no - 1].tgl).toLocaleString();
+    let tanggal = new Date(obj.data[no - 1].tgl).toLocaleString("id-ID");
 
   return `
     <tr>
