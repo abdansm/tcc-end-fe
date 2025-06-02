@@ -2,7 +2,7 @@
 const formulir = document.querySelector("form");
 const url = "https://tcc-end-be-425714712446.us-central1.run.app/api/admin/presensi/";
 const token = sessionStorage.getItem('jwtToken');
-if(token == null){
+if(token == null || token == ""){
     window.location.href = 'index.html';
 }
 
